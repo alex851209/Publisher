@@ -101,9 +101,13 @@ class HomeVC: UIViewController {
                                  id: "",
                                  category: category)
         
-        let canPublish = newArticle.author.email != "" && newArticle.author.id != "" && newArticle.author.name != ""
+        let hasAuthor = newArticle.author.email != "" && newArticle.author.id != "" && newArticle.author.name != ""
+        let hasText = titleTextField.text != "" && categoryTextField.text != "" && contentTextView.text != ""
+        let canPublish = hasAuthor && hasText
         
-        if canPublish {
+        if hasText == false {
+            showEmptyAlert()
+        } else if canPublish {
             dataManager.addDataWith(article: newArticle)
             showAlert(with: canPublish)
             togglePublishPage()
@@ -123,6 +127,14 @@ class HomeVC: UIViewController {
         } else {
             alert = UIAlertController(title: "Publish Failure", message: "Check your Author info", preferredStyle: .alert)
         }
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showEmptyAlert() {
+        
+        let alert = UIAlertController(title: "Publish Failure", message: "Check your input", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
