@@ -51,7 +51,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let cell = UITableViewCell()
         guard let articleCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ArticleCell.self), for: indexPath) as? ArticleCell else { return cell }
         
-        articleCell.setupCell()
+        articleCell.setupCellWith(article: articles[indexPath.row], author: authors[indexPath.row])
         return articleCell
     }
 }

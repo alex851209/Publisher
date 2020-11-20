@@ -15,12 +15,15 @@ class ArticleCell: UITableViewCell {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     
-    func setupCell() {
+    func setupCellWith(article: Article, author: Author) {
         
-        titleLabel.text = "Title"
-        authorLabel.text = "Alex"
-        timeLabel.text = "2020/11/20"
-        categoryLabel.text = "Gossiping"
-        contentLabel.text = "ABCDEFG"
+        titleLabel.text = article.title
+        authorLabel.text = "Author: \(author.name)"
+        timeLabel.text = "\(article.createdTime.dateValue())"
+        categoryLabel.text = article.category
+        contentLabel.text = article.content
+        
+        categoryLabel.layer.cornerRadius = 10
+        categoryLabel.clipsToBounds = true
     }
 }
