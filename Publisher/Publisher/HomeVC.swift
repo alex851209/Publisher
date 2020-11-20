@@ -32,6 +32,7 @@ class HomeVC: UIViewController {
     let author = Author(email: "alex@gmail.com", id: "9527", name: "Alex")
     var maskView = UIView()
     var articles = [Article]()
+    var times = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,8 +60,9 @@ class HomeVC: UIViewController {
     
     func fetchData() {
         
-        dataManager.listenArticle(completion: { [weak self] articles in
+        dataManager.listenArticle(completion: { [weak self] articles, times in
             self?.articles = articles
+            self?.times = times
             self?.articleTableView.reloadData()
         })
     }
@@ -101,13 +103,10 @@ class HomeVC: UIViewController {
               let category = categoryTextField.text
         else { return }
         
-        let timeInterval = NSDate().timeIntervalSince1970
-        let date = Date(timeIntervalSince1970: timeInterval)
-        
         let newArticle = Article(author: author,
                                  title: title,
                                  content: content,
-                                 createdTime: Timestamp(date: date),
+                                 createdTime: 0,
                                  id: "",
                                  category: category)
         
@@ -169,7 +168,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let cell = UITableViewCell()
         guard let articleCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ArticleCell.self), for: indexPath) as? ArticleCell else { return cell }
         
-        articleCell.setupCellWith(article: articles[indexPath.row])
+        articleCell.setupCellWith(article: articles[indexPath.row], time: times[indexPath.row])
         return articleCell
     }
 }
