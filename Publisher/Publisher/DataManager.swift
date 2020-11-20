@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import CodableFirebase
 
 class DataManager {
     
@@ -40,9 +41,10 @@ class DataManager {
         }
     }
     
-    func listenArticle(completion: @escaping ([[String: Any]]) -> (Void)) {
+    func listenArticle(completion: @escaping ([Article], [Author]) -> (Void)) {
         
-        var articles = [[String: Any]]()
+        var articles = [Article]()
+        var authors = [Author]()
         
         database.addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot else {
@@ -50,17 +52,22 @@ class DataManager {
                 return
             }
             _ = documents.documentChanges.map { [weak self] in
-                let article = $0.document.data()
+                guard let article = try? FirestoreDecoder().decode(Article.self, from: $0.document.data())
+                else {
+                    print("Error decoding!")
+                    return
+                }
                 self?.listenAuthor(with: $0.document.documentID, completion: { author in
                     print("******\nNew Article: \(article)\nby Author: \(author)\n******")
                     articles.append(article)
-                    completion(articles)
+                    authors.append(author)
+                    completion(articles, authors)
                 })
             }
         }
     }
     
-    func listenAuthor(with documentID: String, completion: @escaping ([String: Any]) -> (Void)) {
+    func listenAuthor(with documentID: String, completion: @escaping (Author) -> (Void)) {
 
         let document = database.document(documentID).collection("author")
         
@@ -70,7 +77,11 @@ class DataManager {
                 return
             }
             _ = documents.documentChanges.map {
-                let author = $0.document.data()
+                guard let author = try? FirestoreDecoder().decode(Author.self, from: $0.document.data())
+                else {
+                    print("Error decoding!")
+                    return
+                }
                 completion(author)
             }
         }

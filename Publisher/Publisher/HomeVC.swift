@@ -12,7 +12,8 @@ class HomeVC: UIViewController {
     @IBOutlet weak var articleTableView: UITableView!
     
     let dataManager = DataManager()
-    var articles = [[String: Any]]()
+    var articles = [Article]()
+    var authors = [Author]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +30,10 @@ class HomeVC: UIViewController {
     
     func fetchData() {
         
-        dataManager.listenArticle(completion: { [weak self] articles in
-//            print("###\n\(articles.count)\n###")
+        dataManager.listenArticle(completion: { [weak self] articles, authors in
+//            print("###\n\(authors.count)\n###")
             self?.articles = articles
+            self?.authors = authors
             self?.articleTableView.reloadData()
         })
     }

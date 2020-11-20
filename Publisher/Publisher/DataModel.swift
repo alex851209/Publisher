@@ -6,20 +6,23 @@
 //
 
 import Foundation
+import Firebase
+import CodableFirebase
 
-struct Article {
+struct Article: Codable {
     
-    var author: Author
     var title: String
     var content: String
-    var createdTime: NSDate
+    var createdTime: Timestamp
     var id: String
     var category: String
 }
 
-struct Author {
+struct Author: Codable {
     
     var email: String
     var id: String
     var name: String
 }
+
+extension Timestamp: TimestampType {}
