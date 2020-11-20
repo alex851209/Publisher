@@ -11,10 +11,14 @@ class HomeVC: UIViewController {
 
     @IBOutlet weak var articleTableView: UITableView!
     
+    let dataManager = DataManager()
+    var articles = [[String: Any]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
+        fetchData()
     }
     
     func setupTableView() {
@@ -22,13 +26,22 @@ class HomeVC: UIViewController {
         articleTableView.delegate = self
         articleTableView.dataSource = self
     }
+    
+    func fetchData() {
+        
+        dataManager.listenArticle(completion: { [weak self] articles in
+//            print("###\n\(articles.count)\n###")
+            self?.articles = articles
+            self?.articleTableView.reloadData()
+        })
+    }
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 5
+        return articles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

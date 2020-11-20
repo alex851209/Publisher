@@ -16,8 +16,8 @@
 		A5F3477D256754E7008CA710 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5F3477B256754E7008CA710 /* LaunchScreen.storyboard */; };
 		A5F9853925675AD400353815 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F9853825675AD400353815 /* ArticleCell.swift */; };
 		A5F9853D25675E0900353815 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F9853C25675E0900353815 /* DataManager.swift */; };
-		A5F9855625675FEC00353815 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5F9855525675FEC00353815 /* GoogleService-Info.plist */; };
 		A5F98559256761BA00353815 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F98558256761BA00353815 /* DataModel.swift */; };
+		A5F9855E256765E800353815 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5F9855D256765E800353815 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,8 +33,8 @@
 		A5F3477E256754E7008CA710 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5F9853825675AD400353815 /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		A5F9853C25675E0900353815 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		A5F9855525675FEC00353815 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A5F98558256761BA00353815 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		A5F9855D256765E800353815 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C96B8602F68BC4E6F8B0C748 /* Pods-Publisher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Publisher.debug.xcconfig"; path = "Target Support Files/Pods-Publisher/Pods-Publisher.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,7 +98,7 @@
 				A5F34779256754E7008CA710 /* Assets.xcassets */,
 				A5F3477B256754E7008CA710 /* LaunchScreen.storyboard */,
 				A5F3477E256754E7008CA710 /* Info.plist */,
-				A5F9855525675FEC00353815 /* GoogleService-Info.plist */,
+				A5F9855D256765E800353815 /* GoogleService-Info.plist */,
 			);
 			path = Publisher;
 			sourceTree = "<group>";
@@ -163,7 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5F3477D256754E7008CA710 /* LaunchScreen.storyboard in Resources */,
-				A5F9855625675FEC00353815 /* GoogleService-Info.plist in Resources */,
+				A5F9855E256765E800353815 /* GoogleService-Info.plist in Resources */,
 				A5F3477A256754E7008CA710 /* Assets.xcassets in Resources */,
 				A5F34778256754E6008CA710 /* Main.storyboard in Resources */,
 			);
