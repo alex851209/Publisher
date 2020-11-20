@@ -11,6 +11,7 @@ import CodableFirebase
 
 struct Article: Codable {
     
+    var author: Author
     var title: String
     var content: String
     var createdTime: Timestamp

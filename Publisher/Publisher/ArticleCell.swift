@@ -15,10 +15,10 @@ class ArticleCell: UITableViewCell {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     
-    func setupCellWith(article: Article, author: Author) {
+    func setupCellWith(article: Article) {
         
         titleLabel.text = article.title
-        authorLabel.text = "Author: \(author.name)"
+        authorLabel.text = "Author: \(article.author.name)"
         timeLabel.text = "\(article.createdTime.dateValue())"
         categoryLabel.text = article.category
         contentLabel.text = article.content

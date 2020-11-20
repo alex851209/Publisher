@@ -15,7 +15,7 @@ class DataManager {
     
     let database = Firestore.firestore().collection("articles")
     
-    func addData(withArticle article: Article) {
+    func addDataWith(article: Article) {
         
         let document = database.document()
         
@@ -41,48 +41,24 @@ class DataManager {
         }
     }
     
-    func listenArticle(completion: @escaping ([Article], [Author]) -> (Void)) {
+    func listenArticle(completion: @escaping ([Article]) -> (Void)) {
         
         var articles = [Article]()
-        var authors = [Author]()
         
         database.addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot else {
                 print("Error fetching article: \(error!)")
                 return
             }
-            _ = documents.documentChanges.map { [weak self] in
+            _ = documents.documentChanges.map {
                 guard let article = try? FirestoreDecoder().decode(Article.self, from: $0.document.data())
                 else {
                     print("Error decoding!")
                     return
                 }
-                self?.listenAuthor(with: $0.document.documentID, completion: { author in
-                    print("******\nNew Article: \(article)\nby Author: \(author)\n******")
-                    articles.append(article)
-                    authors.append(author)
-                    completion(articles, authors)
-                })
-            }
-        }
-    }
-    
-    func listenAuthor(with documentID: String, completion: @escaping (Author) -> (Void)) {
-
-        let document = database.document(documentID).collection("author")
-        
-        document.addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot else {
-                print("Error fetching author: \(error!)")
-                return
-            }
-            _ = documents.documentChanges.map {
-                guard let author = try? FirestoreDecoder().decode(Author.self, from: $0.document.data())
-                else {
-                    print("Error decoding!")
-                    return
-                }
-                completion(author)
+                print("******\nNew Article: \(article)\n******")
+                articles.insert(article, at: 0)
+                completion(articles)
             }
         }
     }

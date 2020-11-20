@@ -6,17 +6,30 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class HomeVC: UIViewController {
 
     @IBOutlet weak var articleTableView: UITableView!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var publishView: UIView!
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var categoryTextField: UITextField!
+    @IBOutlet weak var contentTextView: UITextView!
+    
+    @IBAction func closeButtonDidTap(_ sender: Any) {
+        
+        togglePublishPage()
+    }
+    @IBAction func publishButtonDidTap(_ sender: Any) {
+        
+        publish()
+    }
     
     let dataManager = DataManager()
+    let author = Author(email: "alex@gmail.com", id: "9527", name: "Alex")
     var maskView = UIView()
     var articles = [Article]()
-    var authors = [Author]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +48,8 @@ class HomeVC: UIViewController {
     
     func fetchData() {
         
-        dataManager.listenArticle(completion: { [weak self] articles, authors in
+        dataManager.listenArticle(completion: { [weak self] articles in
             self?.articles = articles
-            self?.authors = authors
             self?.articleTableView.reloadData()
         })
     }
@@ -46,7 +58,7 @@ class HomeVC: UIViewController {
         
         addButton.layer.cornerRadius = 30
         addButton.clipsToBounds = true
-        addButton.addTarget(self, action: #selector(addArticle), for: .touchUpInside)
+        addButton.addTarget(self, action: #selector(togglePublishPage), for: .touchUpInside)
     }
     
     func setupPublishPage() {
@@ -56,22 +68,39 @@ class HomeVC: UIViewController {
         maskView.isHidden = true
         view.insertSubview(maskView, belowSubview: publishView)
         
-        publishView.frame = CGRect(x: 16, y: view.frame.maxY, width: view.frame.width - 32, height: 500)
         publishView.layer.cornerRadius = 10
         publishView.clipsToBounds = true
         publishView.isHidden = true
+        
+        contentTextView.layer.borderWidth = 1
+        contentTextView.layer.borderColor = CGColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)
+        contentTextView.layer.cornerRadius = 5
     }
     
-    @objc func addArticle() {
+    @objc func togglePublishPage() {
         
-        maskView.isHidden = false
-        publishView.isHidden = false
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, animations: {
-            self.publishView.frame = CGRect(x: 16,
-                                            y: self.articleTableView.frame.minY + 130,
-                                            width: self.view.frame.width - 32,
-                                            height: 500)
-        })
+        maskView.isHidden = !maskView.isHidden
+        publishView.isHidden = !publishView.isHidden
+    }
+    
+    func publish() {
+        
+        guard let title = titleTextField.text,
+              let content = contentTextView.text,
+              let category = categoryTextField.text
+        else { return }
+        
+        let timeInterval = NSDate().timeIntervalSince1970
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
+        let newArticle = Article(author: author,
+                                 title: title,
+                                 content: content,
+                                 createdTime: Timestamp(date: date),
+                                 id: "",
+                                 category: category)
+        
+        dataManager.addDataWith(article: newArticle)
     }
 }
 
@@ -87,7 +116,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let cell = UITableViewCell()
         guard let articleCell = tableView.dequeueReusableCell(withIdentifier: String(describing: ArticleCell.self), for: indexPath) as? ArticleCell else { return cell }
         
-        articleCell.setupCellWith(article: articles[indexPath.row], author: authors[indexPath.row])
+        articleCell.setupCellWith(article: articles[indexPath.row])
         return articleCell
     }
 }
