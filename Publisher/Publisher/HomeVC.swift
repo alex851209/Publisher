@@ -20,6 +20,7 @@ class HomeVC: UIViewController {
     @IBAction func closeButtonDidTap(_ sender: Any) {
         
         togglePublishPage()
+        clearText()
     }
     @IBAction func publishButtonDidTap(_ sender: Any) {
         
@@ -100,7 +101,37 @@ class HomeVC: UIViewController {
                                  id: "",
                                  category: category)
         
-        dataManager.addDataWith(article: newArticle)
+        let canPublish = newArticle.author.email != "" && newArticle.author.id != "" && newArticle.author.name != ""
+        
+        if canPublish {
+            dataManager.addDataWith(article: newArticle)
+            showAlert(with: canPublish)
+            togglePublishPage()
+        } else {
+            showAlert(with: canPublish)
+        }
+    }
+    
+    func showAlert(with canPublish: Bool) {
+        
+        var alert = UIAlertController()
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
+        if canPublish {
+            alert = UIAlertController(title: "Publish Success", message: nil, preferredStyle: .alert)
+            clearText()
+        } else {
+            alert = UIAlertController(title: "Publish Failure", message: "Check your Author info", preferredStyle: .alert)
+        }
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func clearText() {
+        
+        titleTextField.text?.removeAll()
+        categoryTextField.text?.removeAll()
+        contentTextView.text = "Input Content"
     }
 }
 
