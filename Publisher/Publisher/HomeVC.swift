@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import ESPullToRefresh
 
 class HomeVC: UIViewController {
 
@@ -45,6 +46,15 @@ class HomeVC: UIViewController {
         
         articleTableView.delegate = self
         articleTableView.dataSource = self
+        
+        articleTableView.es.addPullToRefresh {
+            [unowned self] in
+            /// Do anything you want...
+            fetchData()
+            articleTableView.reloadData()
+            /// Stop refresh when your job finished, it will reset refresh footer if completion is true
+            self.articleTableView.es.stopPullToRefresh()
+        }
     }
     
     func fetchData() {
